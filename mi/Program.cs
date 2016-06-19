@@ -7,23 +7,29 @@ using HidLibrary;
 using ScpDriverInterface;
 using System.Threading;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace mi
 {
     public class Xiaomi_gamepad
     {
+        public static Form1 MyForm;
+
         private byte[] Vibration = { 0x20, 0x00, 0x00 };
         private Mutex rumble_mutex = new Mutex();
+
+        Thread rThread;
+        Thread iThread;
 
         public Xiaomi_gamepad(HidDevice Device, ScpBus scpBus, int index)
         {
             Device.WriteFeatureData(Vibration);
 
-            Thread rThread = new Thread(() => rumble_thread(Device));
-           // rThread.Priority = ThreadPriority.BelowNormal;
+            rThread = new Thread(() => rumble_thread(Device));
+            // rThread.Priority = ThreadPriority.BelowNormal;
             rThread.Start();
 
-            Thread iThread = new Thread(() => input_thread(Device, scpBus, index));
+            iThread = new Thread(() => input_thread(Device, scpBus, index));
             iThread.Priority = ThreadPriority.Highest;
             iThread.Start();
         }
@@ -40,6 +46,8 @@ namespace mi
                     local_vibration[1] = Vibration[1];
                     rumble_mutex.ReleaseMutex();
                     Device.WriteFeatureData(local_vibration);
+                    Xiaomi_gamepad.MyForm.SetText("Big Motor: " + Vibration[2] + ", Small Motor: " + Vibration[1]);
+                    //Xiaomi_gamepad.MyForm.textBox.AppendText("Big Motor: " + Vibration[2] + ", Small Motor: " + Vibration[1]);
                     //Console.WriteLine("Big Motor: {0}, Small Motor: {1}", Vibration[2], Vibration[1]);
                 }
                 else
@@ -64,6 +72,7 @@ namespace mi
                 bool changed = false;
                 if (data.Status == HidDeviceData.ReadStatus.Success && currentState.Length >= 21 && currentState[0] == 4)
                 {
+                    Xiaomi_gamepad.MyForm.SetText(Program.ByteArrayToHexString(currentState));
                     //Console.WriteLine(Program.ByteArrayToHexString(currentState));
                     X360Buttons Buttons = X360Buttons.None;
                     if ((currentState[1] & 1) != 0) Buttons |= X360Buttons.A;
@@ -183,24 +192,29 @@ namespace mi
                 }
             }
         }
+
+        public void kill()
+        {
+
+        }
     }
 
     class Program
     {
-        private static ScpBus global_scpBus;
-        static bool ConsoleEventCallback(int eventType)
-        {
-            if (eventType == 2)
-            {
-                global_scpBus.UnplugAll();
-            }
-            return false;
-        }
-        static ConsoleEventDelegate handler;   // Keeps it from getting garbage collected
-                                               // Pinvoke
-        private delegate bool ConsoleEventDelegate(int eventType);
-        [DllImport("kernel32.dll", SetLastError = true)]
-        private static extern bool SetConsoleCtrlHandler(ConsoleEventDelegate callback, bool add);
+        //public static ScpBus global_scpBus;
+        //static bool ConsoleEventCallback(int eventType)
+        //{
+        //    if (eventType == 2)
+        //    {
+        //        global_scpBus.UnplugAll();
+        //    }
+        //    return false;
+        //}
+        //static ConsoleEventDelegate handler;   // Keeps it from getting garbage collected
+        //                                       // Pinvoke
+        //private delegate bool ConsoleEventDelegate(int eventType);
+        //[DllImport("kernel32.dll", SetLastError = true)]
+        //private static extern bool SetConsoleCtrlHandler(ConsoleEventDelegate callback, bool add);
 
 
 
@@ -209,63 +223,67 @@ namespace mi
             return string.Join(string.Empty, Array.ConvertAll(bytes, b => b.ToString("X2")));
         }
 
-
-
         static void Main(string[] args)
         {
-            ScpBus scpBus = new ScpBus();
-            scpBus.UnplugAll();
-            global_scpBus = scpBus;
+            //ScpBus scpBus = new ScpBus();
+            //scpBus.UnplugAll();
+            //global_scpBus = scpBus;
 
-            handler = new ConsoleEventDelegate(ConsoleEventCallback);
-            SetConsoleCtrlHandler(handler, true);
+            //handler = new ConsoleEventDelegate(ConsoleEventCallback);
+            //SetConsoleCtrlHandler(handler, true);
 
-            Thread.Sleep(400);
+            //Thread.Sleep(400);
 
-            Xiaomi_gamepad[] gamepads = new Xiaomi_gamepad[4];
-            int index = 1;
-            var compatibleDevices = HidDevices.Enumerate(0x2717, 0x3144).ToList();
-            foreach (var deviceInstance in compatibleDevices)
-            {
-                Console.WriteLine(deviceInstance);
-                HidDevice Device = deviceInstance;
-                try {
-                    Device.OpenDevice(DeviceMode.Overlapped, DeviceMode.Overlapped, ShareMode.Exclusive);
-                } catch (Exception exception)
-                {
-                    Console.WriteLine("Could not open gamepad in exclusive mode. Please close anything that could be using the controller\nAttempting to open it in shared mode.");
-                    Device.OpenDevice(DeviceMode.Overlapped, DeviceMode.Overlapped, ShareMode.ShareRead | ShareMode.ShareWrite);
-                }
+            //Xiaomi_gamepad[] gamepads = new Xiaomi_gamepad[4];
+            //int index = 1;
+            //var compatibleDevices = HidDevices.Enumerate(0x2717, 0x3144).ToList();
+            //foreach (var deviceInstance in compatibleDevices)
+            //{
+            //    Console.WriteLine(deviceInstance);
+            //    HidDevice Device = deviceInstance;
+            //    try {
+            //        Device.OpenDevice(DeviceMode.Overlapped, DeviceMode.Overlapped, ShareMode.Exclusive);
+            //    } catch (Exception exception)
+            //    {
+            //        Console.WriteLine("Could not open gamepad in exclusive mode. Please close anything that could be using the controller\nAttempting to open it in shared mode.");
+            //        Device.OpenDevice(DeviceMode.Overlapped, DeviceMode.Overlapped, ShareMode.ShareRead | ShareMode.ShareWrite);
+            //    }
 
-                byte[] Vibration = { 0x20, 0x00, 0x00 };
-                if (Device.WriteFeatureData(Vibration) == false)
-                {
-                    Console.WriteLine("Could not write to gamepad (is it closed?), skipping");
-                    Device.CloseDevice();
-                    continue;
-                }
+            //    byte[] Vibration = { 0x20, 0x00, 0x00 };
+            //    if (Device.WriteFeatureData(Vibration) == false)
+            //    {
+            //        Console.WriteLine("Could not write to gamepad (is it closed?), skipping");
+            //        Device.CloseDevice();
+            //        continue;
+            //    }
 
-                byte[] serialNumber;
-                byte[] product;
-                Device.ReadSerialNumber(out serialNumber);
-                Device.ReadProduct(out product);
+            //    byte[] serialNumber;
+            //    byte[] product;
+            //    Device.ReadSerialNumber(out serialNumber);
+            //    Device.ReadProduct(out product);
 
 
-                gamepads[index - 1] = new Xiaomi_gamepad(Device, scpBus, index);
-                ++index;
-                
-                if (index >= 5)
-                {
-                    break;
-                }
-            }
+            //    gamepads[index - 1] = new Xiaomi_gamepad(Device, scpBus, index);
+            //    ++index;
 
-            Console.WriteLine("{0} controllers connected", index - 1);
+            //    if (index >= 5)
+            //    {
+            //        break;
+            //    }
+            //}
 
-            while (true)
-            {
-                Thread.Sleep(1000);
-            }
+            //Console.WriteLine("{0} controllers connected", index - 1);
+
+            //while (true)
+            //{
+            //    Thread.Sleep(1000);
+            //}
+
+
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Xiaomi_gamepad.MyForm = new Form1();
+            Application.Run(Xiaomi_gamepad.MyForm);
         }
     }
 }
