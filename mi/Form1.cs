@@ -20,6 +20,10 @@ namespace mi
         public static ScpBus global_scpBus;
         public static HidDevice global_device;
 
+        Xiaomi_gamepad[] gamepads;
+
+        int connected_controllers = 0;
+
         delegate void SetTextCallback(string text);
 
         public void SetText(string text)
@@ -44,7 +48,7 @@ namespace mi
             scpBus.UnplugAll();
             global_scpBus = scpBus;
 
-            Xiaomi_gamepad[] gamepads = new Xiaomi_gamepad[4];
+            gamepads = new Xiaomi_gamepad[4];
             int index = 1;
             var compatibleDevices = HidDevices.Enumerate(0x2717, 0x3144).ToList();
             foreach (var deviceInstance in compatibleDevices)
@@ -90,6 +94,8 @@ namespace mi
 
             //Console.WriteLine("{0} controllers connected", index - 1);
             textBox.AppendText(index - 1 + " controllers connected" + Environment.NewLine);
+
+            connected_controllers = index - 1;
         }
 
         public Form1()
@@ -131,7 +137,17 @@ namespace mi
         {
             //byte[] test = { 0x20, 0x00, 0x00 };
             //global_device.WriteFeatureData(test);
+            //gamepads[0].iThread.Abort();
+            //gamepads[0].rThread.Abort();
+            int x = 0;
+
+            while(x != connected_controllers){
+                gamepads[x].kill();
+                x++;
+            }
+
             global_scpBus.UnplugAll();
+            global_device.CloseDevice();
             Connect();
         }
 

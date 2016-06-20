@@ -195,7 +195,8 @@ namespace mi
 
         public void kill()
         {
-
+            this.rThread.Abort();
+            this.iThread.Abort();
         }
     }
 

@@ -53,6 +53,7 @@
             // 
             // button1
             // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.Location = new System.Drawing.Point(574, 304);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
@@ -72,6 +73,7 @@
             // 
             // checkBox_debug
             // 
+            this.checkBox_debug.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBox_debug.AutoSize = true;
             this.checkBox_debug.Location = new System.Drawing.Point(12, 305);
             this.checkBox_debug.Name = "checkBox_debug";
