@@ -33,6 +33,7 @@
             this.textBox = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
+            this.checkBox_debug = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // textBox
@@ -52,11 +53,11 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(319, 319);
+            this.button1.Location = new System.Drawing.Point(574, 304);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 1;
-            this.button1.Text = "button1";
+            this.button1.Text = "Reconnect";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -69,11 +70,23 @@
             this.notifyIcon.Visible = true;
             this.notifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon_MouseDoubleClick);
             // 
+            // checkBox_debug
+            // 
+            this.checkBox_debug.AutoSize = true;
+            this.checkBox_debug.Location = new System.Drawing.Point(12, 305);
+            this.checkBox_debug.Name = "checkBox_debug";
+            this.checkBox_debug.Size = new System.Drawing.Size(94, 17);
+            this.checkBox_debug.TabIndex = 2;
+            this.checkBox_debug.Text = "Enable Debug";
+            this.checkBox_debug.UseVisualStyleBackColor = true;
+            this.checkBox_debug.CheckedChanged += new System.EventHandler(this.checkBox_debug_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(661, 373);
+            this.ClientSize = new System.Drawing.Size(661, 339);
+            this.Controls.Add(this.checkBox_debug);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.textBox);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -91,5 +104,6 @@
         private System.Windows.Forms.Button button1;
         public System.Windows.Forms.TextBox textBox;
         private System.Windows.Forms.NotifyIcon notifyIcon;
+        private System.Windows.Forms.CheckBox checkBox_debug;
     }
 }

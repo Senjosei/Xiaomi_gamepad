@@ -15,6 +15,8 @@ namespace mi
 {
     public partial class Form1 : Form
     {
+        public bool debug = false;
+
         public static ScpBus global_scpBus;
         public static HidDevice global_device;
 
@@ -22,7 +24,7 @@ namespace mi
 
         public void SetText(string text)
         {
-            if (true)
+            if (debug)
             {
                 if (this.textBox.InvokeRequired)
                 {
@@ -144,6 +146,18 @@ namespace mi
                 textBox.Lines = test;
                 textBox.SelectionStart = textBox.Text.Length;
                 textBox.ScrollToCaret();
+            }
+        }
+
+        private void checkBox_debug_CheckedChanged(object sender, EventArgs e)
+        {
+            if (debug)
+            {
+                debug = false;
+            }
+            else
+            {
+                debug = true;
             }
         }
     }
