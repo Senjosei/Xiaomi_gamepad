@@ -147,7 +147,14 @@ namespace mi
             }
 
             global_scpBus.UnplugAll();
-            global_device.CloseDevice();
+            try
+            {
+                global_device.CloseDevice();
+            }
+            catch (Exception ex)
+            {
+
+            }
             Connect();
         }
 

@@ -280,6 +280,12 @@ namespace mi
             //    Thread.Sleep(1000);
             //}
 
+            var exists = System.Diagnostics.Process.GetProcessesByName(System.IO.Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetEntryAssembly().Location)).Count() > 1;
+            if (exists)
+            {
+                MessageBox.Show("Another instance is already running","Mi");
+                Environment.Exit(0);
+            }
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
