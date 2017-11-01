@@ -12,7 +12,7 @@ It has the exact same layout as an Xbox 360 controller, the same buttons, joysti
 11 buttons (A, B, X, Y, L1, R1, both joysticks, start, back, MI button in the front)
 
 1 dpad
-2 joysticks
+2 joysticks asdas
 2 triggers
 
 2 rumble motors with variable speeds
