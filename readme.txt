@@ -20,7 +20,7 @@ It has the exact same layout as an Xbox 360 controller, the same buttons, joysti
 
 
 
-Protocol:
+Protocol: tesdt
 
 This is reversed engineered using mostly trial and error and looking at the decompiled sensors.gxbaby.so from an image of a Xiaomi tv box I found somewhere. I did this because I wanted to find out how to make the accelerometer work on my computer but I also discovered some other things. I'm posting this here in case it helps someone.
 
