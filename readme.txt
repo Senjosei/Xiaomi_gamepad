@@ -106,6 +106,6 @@ there is one packet that worked with hidraw: write(fd, rumble, 3); it's the rumb
 Input packet:
 
 Input (length 21)
-[byte (0x04)][byte (1 bit per button)][byte (1 bit per button)][byte 0][byte dpad][4 bytes = 4 joystick axis, 1 byte each axis][byte 0][byte 0][byte Ltrigger][byte Rtrigger][6 bytes accelerometer (2 bytes per axis, looks like signed little endian)][byte battery level][byte (MI button)]
+[byte (0x04)][byte (1 bit per button)][byte (1 bit per button)][byte 0][byte dpad][4 bytes = 4 joystick axis, 1 byte each axis][byte 0][byte 0][byte Ltrigger][byte Rtrigger][6 bytes accelerometer (2 bytes per axis, looks like signed little endian)][byte battery level][byte (MI button)]dfdsfsd
 
 
